@@ -1,0 +1,166 @@
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.42857143;
+}
+
+a {
+  color: @blue-link;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: @blue-dark;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.panel {
+  border:1px solid #c0c4cc;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.list {
+  margin: 20px 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  color: #fff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.head{
+  width: 400px;
+  margin-left: 10px;
+  margin-top:10px;
+}
+.radio-group-style{
+  border: 1px solid #EBEBEB;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+hr{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #DDDDDD;
+}
+
+.StandardOut-panelHeaderText {
+  align-items: center;
+  flex: 1 0 auto;
+  display: flex;
+}
+
+.StandardOut-panelHeaderActions {
+  justify-content: flex-end;
+  display: flex;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+.StandardOut-actions {
+  display: flex;
+}
+
+.StandardOut-actionButton {
+  font-size: 16px;
+  height: 30px;
+  min-width: 30px;
+  color: @list-action-icon;
+  background-color: inherit;
+  border: none;
+  border-radius: 50%;
+}
+
+.StandardOut-actionButton:hover {
+  background-color: @list-actn-bg-hov;
+  color: @list-actn-icn-hov;
+}
+
+.StandardOut-actionButton--active {
+  background-color: @list-actn-bg-hov;
+  color: @list-actn-icn-hov;
+
+  &:hover {
+      background-color: @default-link-hov;
+  }
+}
+
+.StandardOut-actionButton + a {
+  margin-left: 15px;
+}
+
+.el-select{
+  .el-tag{
+    height: 24px;
+    line-height: 24px;
+    box-sizing: border-box;
+    margin: 3px 0 3px 6px;
+    background:  @b7grey;
+  }
+}
+.el-input__inner{
+  border: 1px solid @default-white-button-bord;
+}
+.el-textarea__inner{
+  border: 1px solid @default-white-button-bord;
+}
+.el-table{
+  border: 0px solid @default-border;
+  th{
+    background-color: @default-white-button-bord;
+    .cell{
+      background-color: @default-white-button-bord;
+    }
+  }
+  td{
+    border-bottom: 1px solid @default-border;
+  }
+}
+.el-table::after{
+  width: 0px;
+}
+
+.el-pager li.active {
+  border-color: @menu-link-icon;
+  background-color: @menu-link-icon;
+}
+.el-radio-button__orig-radio:checked+.el-radio-button__inner{
+  background-color:  @menu-link-icon;
+  border-color: @menu-link-icon;
+  box-shadow: -1px 0 0 0 @default-stdout-txt;
+}
+.el-radio-button__inner{
+  border: 1px solid @default-white-button-bord;
+}
+.el-radio-button__inner:hover{
+  color:@default-dark;
+}
+
+.el-select-dropdown {
+  width: 200px;
+
+}
