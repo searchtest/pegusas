@@ -118,8 +118,7 @@ export default {
         team_id: null,
         related_template: []
       },
-      rules: {},
-      editable: false
+      rules: {}
     }
   },
   created () {

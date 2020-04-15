@@ -4,7 +4,22 @@
           <el-row :gutter="30" style="padding: 0 0 30px 0">
             <el-col :span="24">
               <div class="List-title" style="margin: 10px">
-                <div class="List-titleText">Flume配置</div>
+                <div class="List-titleText">
+                  <el-dropdown>
+                    <span class="el-dropdown-link">
+                     {{ configDes }}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item @click.native="changeConfig('Flume配置')">Flume配置</el-dropdown-item>
+                      <el-dropdown-item @click.native="changeConfig('Logstash配置')">Logstash配置</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="24">
+              <div class="List-title" style="margin: 10px">
+                <div class="List-titleText"></div>
               </div>
             </el-col>
             <el-col :span="24">
@@ -12,6 +27,9 @@
                 <el-input placeholder="请输入" v-model="filter.flume_name"
                           @keyup.enter.native="onSearchChange({flume__name__icontains: filter.flume_name})"
                           @clear="onSearchChange({flume__name__icontains: filter.flume_name})" :clearable="true">
+                  <el-button slot="append" @click="onSearchChange({flume__name__icontains: filter.flume_name})">
+                    <i class="fa fa-search"></i>
+                  </el-button>
                 </el-input>
               </el-col>
               <div style="display: flex;justify-content: flex-end">
@@ -22,8 +40,8 @@
             </el-col>
           </el-row>
           <el-col :span="24" class="list">
-            <el-table :data="flumes.results">
-              <el-table-column prop="name" label="模板名称" min-width="200" show-overflow-tooltip></el-table-column>
+            <el-table :data="flumes">
+              <el-table-column prop="name" label="模板名称" min-width="100" show-overflow-tooltip></el-table-column>
               <el-table-column prop="description" label="模板描述" min-width="100"></el-table-column>
               <el-table-column prop="team" label="团队" min-width="50"></el-table-column>
               <el-table-column prop="applist" label="链接应用" min-width="200"></el-table-column>
@@ -70,7 +88,7 @@ export default {
   },
   data () {
     return {
-      flumes: {},
+      flumes: [],
       url: null,
       search: {
         page: 1,
@@ -79,7 +97,8 @@ export default {
       },
       filter: {
         flume_name: ''
-      }
+      },
+      configDes: 'Flume配置'
     }
   },
   mounted: function () {
@@ -93,22 +112,73 @@ export default {
     getFlumes ({ url, params }) {
       console.log('###GET_FLUMES###', url, params)
       url = url || '/api/v1/template/'
-      axios.get(url, { params })
-        .then((res) => {
-          console.log('###GET_FLUMES_RES###', res)
-          this.flumes = res.data
-          console.log('###GET_FLUMES_DATA###', this.flumes)
-        })
-        .catch(error => console.log(error))
+      // axios.get(url, { params })
+      //   .then((res) => {
+      //     console.log('###GET_FLUMES_RES###', res)
+      //     this.flumes = res.data
+      //     console.log('###GET_FLUMES_DATA###', this.flumes)
+      //   })
+      //   .catch(error => console.log(error))
+      this.flumes = [
+        {
+          name: 'sdafasd',
+          description: 'sdafasd',
+          team: 'sdafasd',
+          applist: 't',
+          jirastatus: 'sdafasd'
+        },
+        {
+          name: 'sdafasd',
+          description: 'sdafasd',
+          team: 'sdafasd',
+          applist: 'sdafasd',
+          jirastatus: 'sdafasd'
+        },
+        {
+          name: 'sdafasd',
+          description: 'sdafasd',
+          team: 'sdafasd',
+          applist: 'wer',
+          jirastatus: 'sdafasd'
+        },
+        {
+          name: 'sdafasd',
+          description: 'sdafasd',
+          team: 'we',
+          applist: 'sdafasd',
+          jirastatus: 'sdafasd'
+        },
+        {
+          name: 'sdafasd',
+          description: 'sdafasd',
+          team: 'sdafasd',
+          applist: 'sdafasd',
+          jirastatus: 'sdafasd'
+        },
+        {
+          name: 'sdafasd',
+          description: 'r',
+          team: 'sdafasd',
+          applist: 'sdafasd',
+          jirastatus: 'r'
+        },
+        {
+          name: 'af',
+          description: 'f',
+          team: 'f',
+          applist: 'f',
+          jirastatus: 'f'
+        }
+      ]
     },
     onSearchChange (param) {
       for (let m in param) {
         console.log('###ON_SEARCH_CHANGE###', m, param[m])
         if (param[m] === '') {
           Vue.delete(this.search, m)
-          console.log('###ON_SEARCH_CHANGE_DELETE_KEY###',m)
+          console.log('###ON_SEARCH_CHANGE_DELETE_KEY###', m)
         } else {
-          this.search = {...this.search, ...param}
+          this.search = { ...this.search, ...param }
           this.search.page = 1
           console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
         }
@@ -121,7 +191,24 @@ export default {
     },
     handleCurrentChange (val) {
       this.search = { ...this.search, page: val }
+    },
+    changeConfig (value) {
+      this.configDes = value
+      if (value === 'Flume配置') {
+        this.$router.push({ name: 'Flumes' })
+      } else {
+        this.$router.push({ name: 'Logstashes' })
+      }
     }
   }
 }
 </script>
+<style>
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+</style>
