@@ -12,6 +12,8 @@ import FlumeDetail from '../views/flume/FlumeDetail.vue'
 import FlumeDetailInfo from '../views/flume/FlumeDetailInfo.vue'
 import Logstash from '../views/logstash/index.vue'
 import LogstashList from '../views/logstash/LogstashList.vue'
+import LogstashDetail from '../views/logstash/LogstashDetail.vue'
+import LogstashDetailInfo from '../views/logstash/LogstashDetailInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -113,6 +115,43 @@ let routes = [
             path: '',
             name: 'Logstashes',
             component: LogstashList
+          },
+          {
+            path: 'add',
+            component: LogstashDetail,
+            meta: {
+              breadcrumb: {
+                name: 'createLogstash',
+                label: '新建'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'createLogstash',
+                props: true,
+                component: LogstashDetail
+              }
+            ]
+          },
+          {
+            path: ':logstashId/:type',
+            component: LogstashDetailInfo,
+            props: true,
+            meta: {
+              breadcrumb: {
+                name: 'LogstashDetailInfo',
+                label: '详情'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'LogstashDetailInfo',
+                props: true,
+                component: LogstashDetailInfo
+              }
+            ]
           }
         ]
       }
