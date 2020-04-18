@@ -6,6 +6,7 @@ import './assets/theme/theme-green/index.css'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import router from './router'
+import store from './store'
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(ElementUI)
@@ -16,5 +17,6 @@ new Vue({
   el: '#app',
   template: '<App/>',
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

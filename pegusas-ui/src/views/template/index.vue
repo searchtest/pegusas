@@ -1,11 +1,11 @@
 <template>
-    <div id="Logstashes">
+    <div id="Templates">
         <router-view/>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'Logstashes'
+  name: 'Templates'
 }
 </script>

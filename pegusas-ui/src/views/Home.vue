@@ -66,13 +66,8 @@ export default {
       logoHeader: logoHeader,
       menuItems: [
         {
-          name: '仪表盘',
-          path: '/',
-          iconCls: 'fa  fa-tachometer'
-        },
-        {
           name: '采集管理',
-          path: '/flumes',
+          path: '/templates',
           iconCls: 'fa  fa-folder-open'
         }
       ]

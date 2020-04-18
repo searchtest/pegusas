@@ -4,16 +4,11 @@ import Home from '../views/Home.vue'
 
 import Login from '../views/Login.vue'
 import NotFound from '../views/404.vue'
-import Dashboard from '../views/dashboard/index.vue'
 
-import Flume from '../views/flume/index.vue'
-import FlumeList from '../views/flume/FlumeList.vue'
-import FlumeDetail from '../views/flume/FlumeDetail.vue'
-import FlumeDetailInfo from '../views/flume/FlumeDetailInfo.vue'
-import Logstash from '../views/logstash/index.vue'
-import LogstashList from '../views/logstash/LogstashList.vue'
-import LogstashDetail from '../views/logstash/LogstashDetail.vue'
-import LogstashDetailInfo from '../views/logstash/LogstashDetailInfo.vue'
+import Template from '../views/template/index.vue'
+import TemplateList from '../views/template/TemplateList.vue'
+import FlumeDetail from '../views/template/flume/FlumeDetail.vue'
+import LogstashDetail from '../views/template/logstash/LogstashDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -37,38 +32,28 @@ let routes = [
     leaf: true, // 只有一个节点
     children: [
       {
-        path: '',
-        component: Dashboard,
-        name: 'Dashboard',
+        path: 'templates',
+        component: Template,
         meta: {
           breadcrumb: {
-            name: 'Dashboard',
-            label: '仪表盘'
-          }
-        }
-      },
-      {
-        path: 'flumes',
-        component: Flume,
-        meta: {
-          breadcrumb: {
-            name: 'Flumes',
+            name: 'Templates',
             label: '采集管理'
           }
         },
         children: [
           {
             path: '',
-            name: 'Flumes',
-            component: FlumeList
+            name: 'Templates',
+            component: TemplateList
           },
           {
-            path: 'add',
+            path: ':flumeId/flume/:type',
             component: FlumeDetail,
+            props: true,
             meta: {
               breadcrumb: {
                 name: 'createFlume',
-                label: '新建'
+                label: 'Flume配置'
               }
             },
             children: [
@@ -81,48 +66,13 @@ let routes = [
             ]
           },
           {
-            path: ':flumeId/:type',
-            component: FlumeDetailInfo,
+            path: ':logstashId/logstash/:type',
+            component: LogstashDetail,
             props: true,
             meta: {
               breadcrumb: {
-                name: 'FlumeDetailInfo',
-                label: '详情'
-              }
-            },
-            children: [
-              {
-                path: '',
-                name: 'FlumeDetailInfo',
-                props: true,
-                component: FlumeDetailInfo
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: 'logstashes',
-        component: Logstash,
-        meta: {
-          breadcrumb: {
-            name: 'Logstashes',
-            label: '采集管理'
-          }
-        },
-        children: [
-          {
-            path: '',
-            name: 'Logstashes',
-            component: LogstashList
-          },
-          {
-            path: 'add',
-            component: LogstashDetail,
-            meta: {
-              breadcrumb: {
                 name: 'createLogstash',
-                label: '新建'
+                label: 'Logstash配置'
               }
             },
             children: [
@@ -131,25 +81,6 @@ let routes = [
                 name: 'createLogstash',
                 props: true,
                 component: LogstashDetail
-              }
-            ]
-          },
-          {
-            path: ':logstashId/:type',
-            component: LogstashDetailInfo,
-            props: true,
-            meta: {
-              breadcrumb: {
-                name: 'LogstashDetailInfo',
-                label: '详情'
-              }
-            },
-            children: [
-              {
-                path: '',
-                name: 'LogstashDetailInfo',
-                props: true,
-                component: LogstashDetailInfo
               }
             ]
           }
