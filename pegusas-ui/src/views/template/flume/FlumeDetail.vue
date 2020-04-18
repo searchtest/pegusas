@@ -122,7 +122,6 @@
   </el-form>
 </template>
 <script>
-import axios from '../../../http-common'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -130,13 +129,13 @@ export default {
   props: ['flumeId', 'type'],
   computed: {
     ...mapState({
-      flume: state => state.template.activeTemplate
+      flume: state => state.template.activeTemplate,
+      collects: state => state.template.activeTemplate.related_template
     })
   },
   data () {
     return {
       collect: {},
-      collects: [],
       rules: {
         name: [{ required: true, message: '请输入模板名称', trigger: 'blur' }],
         team: [{ required: true, message: '请输入应用组', trigger: 'blur' }],

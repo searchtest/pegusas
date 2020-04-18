@@ -7,7 +7,13 @@ const template = {
       count: 0,
       results: []
     },
-    activeTemplate: {}
+    activeTemplate: {
+      name: null,
+      description: null,
+      team: null,
+      jira_key: null,
+      related_template: []
+    }
   },
   actions: template_actions,
   mutations: template_mutations

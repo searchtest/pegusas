@@ -74,7 +74,7 @@ export default {
       templates: state => state.template.templates,
       queryset: state => state.queryset.querysets.template
     }),
-    baseUrl: () => '/api/v1/tempaltes/'
+    baseUrl: () => '/api/v1/templates/'
   },
   data () {
     return {
