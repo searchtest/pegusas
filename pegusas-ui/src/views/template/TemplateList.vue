@@ -8,8 +8,8 @@
                  {{ configDes }}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeConfig('Flume配置')">Flume配置</el-dropdown-item>
-              <el-dropdown-item @click.native="changeConfig('Logstash配置')">Logstash配置</el-dropdown-item>
+              <el-dropdown-item @click.native="changeConfig('flume')">Flume配置</el-dropdown-item>
+              <el-dropdown-item @click.native="changeConfig('logstash')">Logstash配置</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -66,6 +66,7 @@ import Search from '../../components/search/index.vue'
 
 export default {
   name: 'templateList',
+  props: ['config'],
   components: {
     Search
   },
@@ -83,12 +84,11 @@ export default {
         page_size: 10,
         template_type: 'flume'
       },
-      configDes: 'Flume配置'
+      configDes: null
     }
   },
   mounted: function () {
-    console.log('###MOUNTED###', this.template, this.pagination)
-    this.queryTemplateList()
+    this.changeConfig(this.config)
   },
   methods: {
     moment: moment,
@@ -122,11 +122,12 @@ export default {
       }
     },
     changeConfig (value) {
-      this.configDes = value
-      if (value === 'Flume配置') {
+      if (value === 'flume') {
         this.pagination.template_type = 'flume'
+        this.configDes = 'Flume配置'
       } else {
         this.pagination.template_type = 'logstash'
+        this.configDes = 'Logstash配置'
       }
       this.queryTemplateList()
     }

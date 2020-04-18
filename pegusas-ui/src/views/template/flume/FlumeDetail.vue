@@ -112,9 +112,7 @@
     <el-row :gutter="20">
       <el-col :span="12" style="display: flex;justify-content: flex-end">
         <el-form-item>
-          <router-link :to="{ name: 'Templates' }">
-            <el-button>取消</el-button>
-          </router-link>
+          <el-button type="primary" @click="cancel">取消</el-button>
           <el-button type="primary" @click="onSubmit" :disabled="!editable">配置信息保存</el-button>
         </el-form-item>
       </el-col>
@@ -158,7 +156,10 @@ export default {
   },
   mounted () {
     this.fecthAppFlume()
-    if (this.type !== 'create') {
+    console.log('###TYPE###', this.type)
+    if (this.type === 'create') {
+      this.resetProject()
+    } else {
       this.fetchTemplateDetail(this.flumeId)
     }
   },
@@ -166,7 +167,8 @@ export default {
     ...mapActions([
       'fetchTemplateDetail',
       'updateTemplate',
-      'createTemplate'
+      'createTemplate',
+      'resetProject'
     ]),
     fecthAppFlume () {
       if (this.type === 'view') {
@@ -196,6 +198,9 @@ export default {
     },
     clearStage () {
       this.collect = {}
+    },
+    cancel () {
+      this.$router.push({ name: 'Templates', params: { config: 'flume' } })
     },
     onSubmit () {
       this.$refs.form.validate((valid) => {

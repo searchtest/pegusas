@@ -67,7 +67,7 @@ export default {
       menuItems: [
         {
           name: '采集管理',
-          path: '/templates',
+          path: '/templates/flume',
           iconCls: 'fa  fa-folder-open'
         }
       ]

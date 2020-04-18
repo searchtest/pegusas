@@ -42,8 +42,9 @@ let routes = [
         },
         children: [
           {
-            path: '',
+            path: ':config',
             name: 'Templates',
+            props: true,
             component: TemplateList
           },
           {

@@ -29,6 +29,14 @@ export const template_actions = {
       console.log(error)
     })
   },
+  resetProject ({commit, state}) {
+    console.log('###RESETING_PROJECT###')
+    let data = {}
+    console.log('###RESET_PROJECT_DATA###', data)
+    commit(types.UPDATE_TEMPLATE_STATE, {
+      data
+    })
+  },
   updateTemplate ({commit, state}, params) {
     console.log('###UPDATING_TEMPLATE###', params)
     axios.put('/api/v1/templates/' + params.id + '/', params).then((res) => {

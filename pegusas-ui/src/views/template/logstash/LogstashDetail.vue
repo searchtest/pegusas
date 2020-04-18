@@ -116,11 +116,11 @@
       <el-col :span="24" class="list">
         <el-form-item>
           <el-table :data="collects">
-            <el-table-column prop="description" label="配置描述" min-width="200" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="logstash_kafka" label="源kafka" min-width="200"></el-table-column>
-            <el-table-column prop="logstash_kafka_topic" label="源kafka topic" min-width="200"></el-table-column>
-            <el-table-column prop="logstash_es_index" label="ES索引名称" min-width="200"></el-table-column>
-            <el-table-column label="操作" min-width="200" align="right">
+            <el-table-column prop="description" label="配置描述" min-width="100" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="logstash_kafka" label="源kafka" min-width="100"></el-table-column>
+            <el-table-column prop="logstash_kafka_topic" label="源kafka topic" min-width="100"></el-table-column>
+            <el-table-column prop="logstash_es_index" label="ES索引名称" min-width="100"></el-table-column>
+            <el-table-column label="操作" min-width="100" align="right">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="showDataManage(scope.$index, collects)" type="text" size="small">
                   展示
@@ -137,9 +137,7 @@
     <el-row :gutter="20">
       <el-col :span="12" style="display: flex;justify-content: flex-end">
         <el-form-item>
-          <router-link :to="{ name: 'Templates' }">
-            <el-button>取消</el-button>
-          </router-link>
+          <el-button type="primary" @click="cancel">取消</el-button>
           <el-button type="primary" @click="onSubmit" :disabled="!editable">配置信息保存</el-button>
         </el-form-item>
       </el-col>
@@ -187,7 +185,10 @@ export default {
   },
   mounted () {
     this.fecthAppLogstash()
-    if (this.type !== 'create') {
+    console.log('###TYPE###', this.type)
+    if (this.type === 'create') {
+      this.resetProject()
+    } else {
       this.fetchTemplateDetail(this.logstashId)
     }
   },
@@ -195,7 +196,8 @@ export default {
     ...mapActions([
       'fetchTemplateDetail',
       'updateTemplate',
-      'createTemplate'
+      'createTemplate',
+      'resetProject'
     ]),
     fecthAppLogstash () {
       if (this.type === 'view') {
@@ -230,6 +232,9 @@ export default {
     },
     clearStage () {
       this.collect = {}
+    },
+    cancel () {
+      this.$router.push({ name: 'Templates', params: { config: 'logstash' } })
     },
     onSubmit () {
       this.$refs.form.validate((valid) => {
