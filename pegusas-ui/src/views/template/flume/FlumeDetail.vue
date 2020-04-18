@@ -212,6 +212,7 @@ export default {
             })
           } else {
             this.flume.related_template = this.collects
+            this.flume.template_type = 'flume'
             console.log('###RELATED_TEMPLATE_FLUME###', this.flume)
             if (this.type === 'create') {
               this.createTemplate(this.flume)

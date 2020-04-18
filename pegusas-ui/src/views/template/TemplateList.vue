@@ -74,7 +74,7 @@ export default {
       templates: state => state.template.templates,
       queryset: state => state.queryset.querysets.template
     }),
-    baseUrl: () => '/api/v1/template/'
+    baseUrl: () => '/api/v1/tempaltes/'
   },
   data () {
     return {
@@ -116,9 +116,9 @@ export default {
     },
     viewTemplates (row, type) {
       if (this.pagination.template_type === 'flume') {
-        this.$router.push({ name: 'FlumeDetail', params: { flumeId: row.id, type: type } })
+        this.$router.push({ name: 'createFlume', params: { flumeId: row.id, type: type } })
       } else {
-        this.$router.push({ name: 'LogstashDetail', params: { logstashId: row.id, type: type } })
+        this.$router.push({ name: 'createLogstash', params: { logstashId: row.id, type: type } })
       }
     },
     changeConfig (value) {

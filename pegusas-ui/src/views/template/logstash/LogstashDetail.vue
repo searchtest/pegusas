@@ -247,6 +247,7 @@ export default {
             })
           } else {
             this.logstash.related_template = this.collects
+            this.logstash.template_type = 'logstash'
             console.log('###RELATED_TEMPLATE###', this.logstash)
             if (this.type === 'create') {
               this.createTemplate(this.logstash)
