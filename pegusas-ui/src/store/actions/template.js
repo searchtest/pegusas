@@ -29,10 +29,10 @@ export const template_actions = {
       console.log(error)
     })
   },
-  resetProject ({commit, state}) {
-    console.log('###RESETING_PROJECT###')
+  resetTemplate ({commit, state}) {
+    console.log('###RESETING_TEMPLATE###')
     let data = {}
-    console.log('###RESET_PROJECT_DATA###', data)
+    console.log('###RESET_TEMPLATE_DATA###', data)
     commit(types.UPDATE_TEMPLATE_STATE, {
       data
     })

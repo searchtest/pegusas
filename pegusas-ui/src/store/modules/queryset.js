@@ -3,7 +3,11 @@ import { queryset_mutations } from '../mutations/queryset'
 const queryset = {
   state: {
     querysets: {
-      template: null
+      template: null,
+      app: null,
+      appBatch: null,
+      host: null,
+      jobs: null
     }
   },
   actions: null,

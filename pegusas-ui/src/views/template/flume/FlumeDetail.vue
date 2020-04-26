@@ -121,6 +121,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import axios from '../../../http-common'
 
 export default {
   name: 'FlumeDetail',
@@ -158,7 +159,7 @@ export default {
     this.fecthAppFlume()
     console.log('###TYPE###', this.type)
     if (this.type === 'create') {
-      this.resetProject()
+      this.resetTemplate()
     } else {
       this.fetchTemplateDetail(this.flumeId)
     }
@@ -168,7 +169,7 @@ export default {
       'fetchTemplateDetail',
       'updateTemplate',
       'createTemplate',
-      'resetProject'
+      'resetTemplate'
     ]),
     fecthAppFlume () {
       if (this.type === 'view') {

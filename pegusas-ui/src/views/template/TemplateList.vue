@@ -1,18 +1,16 @@
 <template>
   <el-row class="panel">
     <el-col :span="24">
-      <div class="List-title" style="margin: 10px">
-        <div class="List-titleText">
-          <el-dropdown>
-                <span class="el-dropdown-link">
-                 {{ configDes }}<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeConfig('flume')">Flume配置</el-dropdown-item>
-              <el-dropdown-item @click.native="changeConfig('logstash')">Logstash配置</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
+      <div class="List-title List-titleText" style="margin: 10px">
+        <el-dropdown>
+              <span class="el-dropdown-link">
+               {{ configDes }}<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="changeConfig('flume')">Flume配置</el-dropdown-item>
+            <el-dropdown-item @click.native="changeConfig('logstash')">Logstash配置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </el-col>
     <el-col :span="24">
@@ -61,6 +59,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import axios from '../../http-common'
 import moment from 'moment'
 import Search from '../../components/search/index.vue'
 
@@ -144,12 +143,3 @@ export default {
   }
 }
 </script>
-<style>
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
-</style>

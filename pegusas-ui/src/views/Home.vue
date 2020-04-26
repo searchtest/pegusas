@@ -29,6 +29,15 @@
             <i :class="item.iconCls" style="width: 20px;height: 20px"></i>
             {{ item.name }}
           </el-menu-item>
+          <el-submenu v-for="(item,index) in menuItems" v-if="item.path === ''" :key="index">
+            <template slot="title">
+              <i :class="item.iconCls" style="width: 20px;height: 20px"></i>
+              {{item.name}}
+            </template>
+            <el-menu-item v-for="(menu,index) in item.children" :index="menu.path" :key="index">
+              <span class="el-menu-item-name">{{menu.name}}</span>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
@@ -68,6 +77,33 @@ export default {
         {
           name: '采集管理',
           path: '/templates/flume',
+          iconCls: 'fa  fa-folder-open'
+        },
+        {
+          name: '部署管理',
+          path: '',
+          iconCls: 'fa  fa-folder-open',
+          children: [
+            {
+              name: '应用信息',
+              path: '/app/apps',
+              iconCls: 'fa  fa-folder-open'
+            },
+            {
+              name: '主机运维',
+              path: '/app/hosts',
+              iconCls: 'fa  fa-folder-open'
+            },
+            {
+              name: '任务查看',
+              path: '/app/jobs',
+              iconCls: 'fa  fa-folder-open'
+            }
+          ]
+        },
+        {
+          name: '系统设置',
+          path: '/system',
           iconCls: 'fa  fa-folder-open'
         }
       ]
@@ -164,10 +200,24 @@ export default {
             font-size: 20px;
           }
         }
+    .el-submenu {
+      background-color: @menu-link-icon;
+      color: @menu-bg;
+      i {
+        color: @menu-bg;
+        font-size: 20px;
+      }
+    }
     .el-menu-item.is-active{
-            background-color: @menu-link-btm-hov;
-        }
+      background-color: @menu-link-btm-hov;
+    }
     .el-menu-item:hover {
+      background-color: @menu-link-btm-hov;
+    }
+    .el-submenu.is-active{
+      background-color: @menu-link-btm-hov;
+    }
+    .el-submenu:hover {
       background-color: @menu-link-btm-hov;
     }
   }

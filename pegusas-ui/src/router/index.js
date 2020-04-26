@@ -9,6 +9,14 @@ import Template from '../views/template/index.vue'
 import TemplateList from '../views/template/TemplateList.vue'
 import FlumeDetail from '../views/template/flume/FlumeDetail.vue'
 import LogstashDetail from '../views/template/logstash/LogstashDetail.vue'
+import App from '../views/deploy/app/index.vue'
+import Apps from '../views/deploy/app/Apps.vue'
+import Hosts from '../views/deploy/host/Hosts.vue'
+import Jobs from '../views/deploy/job/JobList.vue'
+import AppBatchs from '../views/deploy/appBatch/AppBatchs.vue'
+import AppBatch from '../views/deploy/appBatch/AppBatchDetail.vue'
+import System from '../views/system/index.vue'
+import Systems from '../views/system/SystemList.vue'
 
 Vue.use(VueRouter)
 
@@ -84,6 +92,79 @@ let routes = [
                 component: LogstashDetail
               }
             ]
+          }
+        ]
+      },
+      {
+        path: 'app',
+        component: App,
+        meta: {
+          breadcrumb: {
+            name: 'App',
+            label: '部署管理'
+          }
+        },
+        children: [
+          {
+            path: 'apps',
+            name: 'Apps',
+            props: true,
+            component: Apps
+          },
+          {
+            path: 'hosts',
+            name: 'Hosts',
+            props: true,
+            component: Hosts
+          },
+          {
+            path: 'jobs',
+            name: 'Jobs',
+            props: true,
+            component: Jobs
+          },
+          {
+            path: ':batchId/:team',
+            component: AppBatchs,
+            props: true,
+            name: 'AppBatch'
+          },
+          {
+            path: ':batchId/:team/:type/appBatch',
+            component: AppBatch,
+            props: true,
+            meta: {
+              breadcrumb: {
+                name: 'createAppBatch',
+                label: '创建批次'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'createAppBatch',
+                props: true,
+                component: AppBatch
+              }
+            ]
+          }
+        ]
+      },
+      {
+        path: 'system',
+        component: System,
+        meta: {
+          breadcrumb: {
+            name: 'System',
+            label: '参数配置'
+          }
+        },
+        children: [
+          {
+            path: '',
+            name: 'Systems',
+            props: true,
+            component: Systems
           }
         ]
       }

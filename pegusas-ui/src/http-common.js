@@ -26,7 +26,7 @@ axios.interceptors.response.use(function (response) {
       message: '操作失败'
     })
   }
-  if (error.config.url === '/api/v2/me/') {
+  if (error.config.url === '/api/v1/me/') {
     router.push('/login')
     return
   }

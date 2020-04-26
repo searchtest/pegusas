@@ -102,7 +102,7 @@
           </el-col>
           <el-col :span="6" style="padding-left: 10px; padding-right: 10px;">
             <el-form-item label="自定义配置" prop="logstash_customize_temp">
-              <el-input v-model="collect.logstash_customize_temp" :disabled="!editable"></el-input>
+              <el-input type="textarea" :rows="1" v-model="collect.logstash_customize_temp" :disabled="!editable"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" style="display: flex;justify-content: flex-end">
@@ -146,6 +146,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import axios from '../../../http-common'
 
 export default {
   name: 'LogstashDetail',
@@ -187,7 +188,7 @@ export default {
     this.fecthAppLogstash()
     console.log('###TYPE###', this.type)
     if (this.type === 'create') {
-      this.resetProject()
+      this.resetTemplate()
     } else {
       this.fetchTemplateDetail(this.logstashId)
     }
@@ -197,7 +198,7 @@ export default {
       'fetchTemplateDetail',
       'updateTemplate',
       'createTemplate',
-      'resetProject'
+      'resetTemplate'
     ]),
     fecthAppLogstash () {
       if (this.type === 'view') {
