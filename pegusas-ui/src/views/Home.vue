@@ -25,19 +25,19 @@
       <el-aside class="sideNav" style="width: 160px">
         <!--导航菜单-->
         <el-menu :default-active="$route.path"  class="el-menu-vertical sideNav-menu" unique-opened router>
-          <el-menu-item v-for="(item, index) in menuItems" v-if="item.path" :index="item.path" :key="index">
-            <i :class="item.iconCls" style="width: 20px;height: 20px"></i>
-            {{ item.name }}
-          </el-menu-item>
-          <el-submenu v-for="(item,index) in menuItems" v-if="item.path === ''" :key="index">
+          <el-submenu v-for="(item,index) in menuItems" v-if="item.path === ''" :index="item.path" :key="index">
             <template slot="title">
               <i :class="item.iconCls" style="width: 20px;height: 20px"></i>
-              {{item.name}}
+              <span style="color: #FFFFFF;">{{item.name}}</span>
             </template>
             <el-menu-item v-for="(menu,index) in item.children" :index="menu.path" :key="index">
               <span class="el-menu-item-name">{{menu.name}}</span>
             </el-menu-item>
           </el-submenu>
+          <el-menu-item v-for="(item, index) in menuItems" v-if="item.path" :index="item.path" :key="index">
+            <i :class="item.iconCls" style="width: 20px;height: 20px"></i>
+            {{ item.name }}
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -76,7 +76,7 @@ export default {
       menuItems: [
         {
           name: '采集管理',
-          path: '/templates/flume',
+          path: '/templates',
           iconCls: 'fa  fa-folder-open'
         },
         {

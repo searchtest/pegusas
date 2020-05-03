@@ -7,6 +7,7 @@ const queryset = {
       app: null,
       appBatch: null,
       host: null,
+      log: null,
       jobs: null
     }
   },

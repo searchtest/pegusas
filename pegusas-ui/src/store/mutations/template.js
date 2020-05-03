@@ -8,10 +8,7 @@ export const template_mutations = {
   },
   [types.UPDATE_TEMPLATE_STATE] (state, action) {
     console.log('####TEMPLATE_STATE_UPDATING####', JSON.parse(JSON.stringify(state)), action)
-    state.activeTemplate = action.data
-    if (!('related_template' in state.activeTemplate)) {
-      state.activeTemplate.related_template = []
-    }
+    state.template = action.data
     console.log('####TEMPLATE_STATE_UPDATED####', JSON.parse(JSON.stringify(state)))
   }
 }

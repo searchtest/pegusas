@@ -7,7 +7,10 @@ import NotFound from '../views/404.vue'
 
 import Template from '../views/template/index.vue'
 import TemplateList from '../views/template/TemplateList.vue'
+import FlumeList from '../views/template/flume/FlumeList.vue'
 import FlumeDetail from '../views/template/flume/FlumeDetail.vue'
+import LogstashList from '../views/template/logstash/LogstashList.vue'
+import TemplateDetail from '../views/template/TemplateDetail.vue'
 import LogstashDetail from '../views/template/logstash/LogstashDetail.vue'
 import App from '../views/deploy/app/index.vue'
 import Apps from '../views/deploy/app/Apps.vue'
@@ -50,13 +53,55 @@ let routes = [
         },
         children: [
           {
-            path: ':config',
+            path: '',
             name: 'Templates',
             props: true,
             component: TemplateList
           },
           {
-            path: ':flumeId/flume/:type',
+            path: 'add',
+            component: TemplateDetail,
+            meta: {
+              breadcrumb: {
+                name: 'createTemplate',
+                label: '创建模板'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'createTemplate',
+                component: TemplateDetail
+              }
+            ]
+          },
+          {
+            path: ':templateId',
+            props: true,
+            component: TemplateDetail,
+            meta: {
+              breadcrumb: {
+                name: 'TemplateDetail',
+                label: '创建模板'
+              }
+            },
+            children: [
+              {
+                path: '',
+                props: true,
+                name: 'TemplateDetail',
+                component: TemplateDetail
+              }
+            ]
+          },
+          {
+            path: ':templateId/flumes',
+            name: 'Flumes',
+            props: true,
+            component: FlumeList
+          },
+          {
+            path: ':templateId/addFlume',
             component: FlumeDetail,
             props: true,
             meta: {
@@ -75,7 +120,32 @@ let routes = [
             ]
           },
           {
-            path: ':logstashId/logstash/:type',
+            path: ':templateId/:id/updateFlume',
+            component: FlumeDetail,
+            props: true,
+            meta: {
+              breadcrumb: {
+                name: 'FlumeDetail',
+                label: 'Flume配置'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'FlumeDetail',
+                props: true,
+                component: FlumeDetail
+              }
+            ]
+          },
+          {
+            path: ':templateId/logstashList',
+            name: 'LogstashList',
+            props: true,
+            component: LogstashList
+          },
+          {
+            path: ':templateId/addLogstash',
             component: LogstashDetail,
             props: true,
             meta: {
@@ -88,6 +158,25 @@ let routes = [
               {
                 path: '',
                 name: 'createLogstash',
+                props: true,
+                component: LogstashDetail
+              }
+            ]
+          },
+          {
+            path: ':templateId/:id/updateLogstash',
+            component: LogstashDetail,
+            props: true,
+            meta: {
+              breadcrumb: {
+                name: 'LogstashDetail',
+                label: 'Logstash配置'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'LogstashDetail',
                 props: true,
                 component: LogstashDetail
               }
@@ -124,7 +213,7 @@ let routes = [
             component: Jobs
           },
           {
-            path: ':batchId/:team',
+            path: ':name/:team',
             component: AppBatchs,
             props: true,
             name: 'AppBatch'

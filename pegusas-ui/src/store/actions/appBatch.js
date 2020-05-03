@@ -37,13 +37,28 @@ export const appBatch_actions = {
       console.log(error)
     })
   },
-  fetchHosts ({commit, state}) {
-    console.log('###FETCHING_HOSTS_DETAIL###')
-    axios.get('/api/v1/hosts/').then((res) => {
-      console.log('####FETCH_HOSTS_DETAIL_RES####', res)
+  fetchTemplates ({commit, state}, { url, params }) {
+    console.log('###FETCHING_TEMPLATES###', url, params)
+    url = url || '/api/v1/templates/'
+    axios.get(url, {params: params}).then((res) => {
+      console.log('####FETCH_TEMPLATES_RES####', res)
       let data = res.data
-      console.log('####FETCH_HOSTS_DETAIL_DATA####', data)
-      commit(types.UPDATE_UNHOSTS_STATE, {
+      console.log('####FETCH_TEMPLATES_DATA####', data)
+      commit(types.UPDATE_BATCHTEMPLATES_STATE, {
+        data
+      })
+    }).catch((error) => {
+      console.log(error)
+    })
+  },
+  fetchHosts ({commit, state}, { url, params }) {
+    console.log('###FETCHING_HOSTS_DETAIL###', url, params)
+    url = url || '/api/v1/hosts/'
+    axios.get(url, {params: params}).then((res) => {
+      console.log('####FETCH_BATCHTHOSTS_DETAIL_RES####', res)
+      let data = res.data
+      console.log('####FETCH_BATCHTHOSTS_DETAIL_DATA####', data)
+      commit(types.UPDATE_BATCHHOSTS_STATE, {
         data
       })
     }).catch((error) => {

@@ -5,15 +5,17 @@ const template = {
   state: {
     templates: {
       count: 0,
-      results: []
+      results: [
+        {
+          id: 1,
+          name: 'afasd',
+          description: 'afasd',
+          team: 'afasd',
+          jira_key: 'afasd'
+        }
+      ]
     },
-    activeTemplate: {
-      name: null,
-      description: null,
-      team: null,
-      jira_key: null,
-      related_template: []
-    }
+    template: {}
   },
   actions: template_actions,
   mutations: template_mutations

@@ -73,8 +73,30 @@ const appBatch = {
         }
       ]
     },
+    templates: {
+      count: 0,
+      results: [
+        {
+          ip: 'sad1',
+          team: 'sad'
+        },
+        {
+          ip: 'sad2',
+          team: 'sad'
+        },
+        {
+          ip: 'sad3',
+          team: 'sad'
+        },
+        {
+          ip: 'sad4',
+          team: 'sad'
+        }
+      ]
+    },
     appBatchDetail: {
-      hosts: []
+      hosts: [],
+      templates: []
     },
     awxJob: {}
   },

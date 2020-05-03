@@ -22,39 +22,44 @@
         <el-table-column prop="description" label="发布版本" min-width="100"></el-table-column>
         <el-table-column label="操作" min-width="200" align="center">
           <template slot-scope="scope">
-            <el-tooltip content="发布" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="setAppBacth(scope.row)">
+            <el-tooltip content="安装" placement="top">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="releaseBacth('install', scope.row)">
+                <i class="fa fa-cogs"></i>
+              </button>
+            </el-tooltip>
+            <el-tooltip content="配置更新" placement="top">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="releaseBacth('change', scope.row)">
                 <i class="fa fa-rocket"></i>
               </button>
             </el-tooltip>
-            <el-tooltip content="回滚" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="setAppBacth(scope.row)">
-                <i class="fa fa-recycle"></i>
-              </button>
-            </el-tooltip>
             <el-tooltip content="启动" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="setAppBacth(scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="releaseBacth('start', scope.row)">
                 <i class="fa fa-play-circle"></i>
               </button>
             </el-tooltip>
             <el-tooltip content="停止" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="setAppBacth(scope.row)">
-                <i class="fa fa-minus-circle"></i>
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="releaseBacth('stop', scope.row)">
+                <i class="fa fa-stop-circle"></i>
               </button>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editAppBatch('update', scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch('update', scope.row)">
                 <i class="fa fa-pencil"></i>
               </button>
             </el-tooltip>
             <el-tooltip content="查看" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editAppBatch('view', scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch('view', scope.row)">
                 <i class="fa fa-search-plus"></i>
               </button>
             </el-tooltip>
             <el-tooltip placement="top"  v-if="scope.row.status === 'running'">
               <div slot="content">执行中</div>
               <i class="fa fa-spinner fa-spin" style="font-size: 20px;color:#67c23a;"></i>
+            </el-tooltip>
+            <el-tooltip content="取消" placement="top">
+              <button class="List-actionButton" v-if="scope.row.status === 'running'" @click="editBatch('view', scope.row)">
+                <i class="fa fa-minus-circle"></i>
+              </button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -72,6 +77,27 @@
         :total="appBatchs.count">
       </el-pagination>
     </el-col>
+
+    <el-dialog title="配置详情" :visible.sync="dialogVisible" :close-on-click-modal="false" width="40%">
+      <el-row class="JobResults-resultRow">
+        <el-col class="JobResults-resultRowLabel" :span="2"><label>asdfasd</label></el-col>
+        <el-col class="JobResults-resultRowText" :span="16"><label>asd</label></el-col>
+      </el-row>
+      <el-row class="JobResults-resultRow">
+        <el-col class="JobResults-resultRowLabel" :span="8"><label>ACTION</label></el-col>
+        <el-col class="JobResults-resultRowText" :span="8"><label>asd</label></el-col>
+      </el-row>
+      <el-row class="JobResults-resultRow">
+        <el-col class="JobResults-resultRowLabel" :span="8"><label>CHANGES</label></el-col>
+      </el-row>
+      <el-row class="JobResults-resultRow">
+        <el-input type="textarea" style="width: 100%" :rows="6" disabled="disabled"></el-input>
+      </el-row>
+      <el-row style="margin-top:10px;display: flex;justify-content: center">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="promary" @click="execute()">确定</el-button>
+      </el-row>
+    </el-dialog>
   </el-row>
 </template>
 <script>
@@ -82,7 +108,7 @@ import Search from '../../../components/search/index.vue'
 
 export default {
   name: 'appBatchs',
-  props: ['batchId', 'team'],
+  props: ['name', 'team'],
   components: {
     Search
   },
@@ -99,7 +125,7 @@ export default {
         page: 1,
         page_size: 10
       },
-      configDes: null
+      dialogVisible: false
     }
   },
   mounted: function () {
@@ -129,8 +155,15 @@ export default {
     createAppBatch () {
       this.$router.push({ name: 'createAppBatch', params: { batchId: -1, team: this.team, type: 'create' } })
     },
-    editAppBatch (type, row) {
+    editBatch (type, row) {
       this.$router.push({ name: 'createAppBatch', params: { batchId: row.id, team: this.team, type: type } })
+    },
+    releaseBacth (type, row) {
+      this.dialogVisible = true
+    },
+    execute () {
+      this.dialogVisible = false
+      window.open('http://localhost:8080')
     }
   },
   watch: {

@@ -5,12 +5,8 @@ const app = {
   state: {
     apps: {
       count: 0,
-      results: [{
-        name: 'dsf',
-        team: 'dsf',
-        time: 'dsf',
-        description: 'dsf'
-      }
+      results: [
+        {name: 'adfs'}
       ]
     }
   },
