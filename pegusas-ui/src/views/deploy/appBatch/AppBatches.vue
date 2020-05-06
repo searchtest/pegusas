@@ -7,9 +7,9 @@
     </el-col>
     <el-col :span="24">
       <el-col :span="12">
-        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
-                  @clear="onSearchChange({search: filter.name})" :clearable="true">
-          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({name: filter.name})"
+                  @clear="onSearchChange({name: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({name: filter.name})">
             <i class="fa fa-search"></i>
           </el-button>
         </el-input>
