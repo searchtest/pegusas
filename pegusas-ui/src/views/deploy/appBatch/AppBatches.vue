@@ -121,7 +121,6 @@ export default {
     ...mapState({
       appBatches: state => state.appBatch.appBatches
     }),
-    baseUrl: () => this.standard ? `/api/v1/apps/standard/${this.appId}/batches/` : `/api/v1/apps/unstandard/${this.appId}/batches/`
   },
   data () {
     return {
@@ -133,6 +132,7 @@ export default {
         name: ''
       },
       dialogVisible: false,
+      baseUrl: this.standard ? '/api/v1/apps/standard/' + this.appId + '/batches/' : '/api/v1/apps/unstandard/' + this.appId + '/batches/'
     }
   },
   mounted: function () {
