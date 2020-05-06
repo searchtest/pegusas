@@ -7,8 +7,8 @@
             {{standardMsg}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="changeConfig(true)">标准化应用</el-dropdown-item>
-            <el-dropdown-item @click.native="changeConfig(false)">非标准化应用</el-dropdown-item>
+            <el-dropdown-item @click.native="changeConfig('standard')">标准化应用</el-dropdown-item>
+            <el-dropdown-item @click.native="changeConfig('unstandard')">非标准化应用</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -81,11 +81,11 @@ export default {
         name: ''
       },
       standardMsg: '标椎化应用',
-      standard: true
+      status: 'standard'
     }
   },
   mounted: function () {
-    if (this.standard) {
+    if (this.status === 'standard') {
       this.queryStandardApps()
     } else {
       this.queryUnStandardApps()
@@ -116,7 +116,7 @@ export default {
           console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
         }
         this.pagination.page = 1
-        if (this.standard) {
+        if (this.status === 'standard') {
           this.fetchApps({ url: '/api/v1/apps/standard', params: this.pagination })
         } else {
           this.fetchApps({ url: '/api/v1/apps/unstandard', params: this.pagination })
@@ -125,7 +125,7 @@ export default {
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
-      if (this.standard) {
+      if (this.status === 'standard') {
         this.queryStandardApps()
       } else {
         this.queryUnStandardApps()
@@ -133,18 +133,18 @@ export default {
     },
     handleCurrentChange (val) {
       this.pagination = { ...this.pagination, page: val }
-      if (this.standard) {
+      if (this.status === 'standard') {
         this.queryStandardApps()
       } else {
         this.queryUnStandardApps()
       }
     },
     setAppBacth (row) {
-      this.$router.push({ name: 'AppBatches', params: { appId: row.id, standard: this.standard } })
+      this.$router.push({ name: 'AppBatches', params: { appId: row.id, status: this.status } })
     },
     changeConfig (type) {
-      this.standard = type
-      if (type) {
+      this.status = type
+      if (type === 'standard') {
         this.standardMsg = '标椎化应用'
         this.queryStandardApps()
       } else {

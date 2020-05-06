@@ -115,12 +115,12 @@ import Vue from 'vue'
 
 export default {
   name: 'appBatches',
-  props: ['appId', 'standard'],
+  props: ['appId', 'status'],
   components: {},
   computed: {
     ...mapState({
       appBatches: state => state.appBatch.appBatches
-    }),
+    })
   },
   data () {
     return {
@@ -132,7 +132,7 @@ export default {
         name: ''
       },
       dialogVisible: false,
-      baseUrl: this.standard ? '/api/v1/apps/standard/' + this.appId + '/batches/' : '/api/v1/apps/unstandard/' + this.appId + '/batches/'
+      baseUrl: '/api/v1/apps/' + this.status + '/' + this.appId + '/batches/'
     }
   },
   mounted: function () {
@@ -171,7 +171,7 @@ export default {
           console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
         }
         this.pagination.page = 1
-        this.fetchTemplates({ url: this.baseUrl, params: this.pagination })
+        this.fetchAppBatches({ url: this.baseUrl, params: this.pagination, appId: this.appId })
       }
     },
     releaseBacth (type, row) {

@@ -209,7 +209,7 @@ let routes = [
             component: Jobs
           },
           {
-            path: ':appId/:standard/batches',
+            path: ':appId/:status/batches',
             component: AppBatches,
             props: true,
             name: 'AppBatches'
