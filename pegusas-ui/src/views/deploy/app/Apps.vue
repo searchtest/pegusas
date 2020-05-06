@@ -85,24 +85,16 @@ export default {
     }
   },
   mounted: function () {
-    if (this.status === 'standard') {
-      this.queryStandardApps()
-    } else {
-      this.queryUnStandardApps()
-    }
+    this.queryApps()
   },
   methods: {
     moment: moment,
     ...mapActions([
       'fetchApps'
     ]),
-    queryStandardApps () {
+    queryApps () {
       console.log('###QUERY_APPS###', this.pagination)
-      this.fetchApps({ url: '/api/v1/apps/standard', params: this.pagination })
-    },
-    queryUnStandardApps () {
-      console.log('###QUERY_APPS###', this.pagination)
-      this.fetchApps({ url: '/api/v1/apps/unstandard', params: this.pagination })
+      this.fetchApps({url: '/api/v1/apps/' + this.status, params: this.pagination})
     },
     onSearchChange (param) {
       for (let m in param) {
@@ -116,28 +108,16 @@ export default {
           console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
         }
         this.pagination.page = 1
-        if (this.status === 'standard') {
-          this.fetchApps({ url: '/api/v1/apps/standard', params: this.pagination })
-        } else {
-          this.fetchApps({ url: '/api/v1/apps/unstandard', params: this.pagination })
-        }
+        this.fetchApps({ url: '/api/v1/apps/' + this.status, params: this.pagination })
       }
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
-      if (this.status === 'standard') {
-        this.queryStandardApps()
-      } else {
-        this.queryUnStandardApps()
-      }
+      this.queryApps()
     },
     handleCurrentChange (val) {
       this.pagination = { ...this.pagination, page: val }
-      if (this.status === 'standard') {
-        this.queryStandardApps()
-      } else {
-        this.queryUnStandardApps()
-      }
+      this.queryApps()
     },
     setAppBacth (row) {
       this.$router.push({ name: 'AppBatches', params: { appId: row.id, status: this.status } })
@@ -146,11 +126,10 @@ export default {
       this.status = type
       if (type === 'standard') {
         this.standardMsg = '标椎化应用'
-        this.queryStandardApps()
       } else {
         this.standardMsg = '非标椎化应用'
-        this.queryUnStandardApps()
       }
+      this.queryApps()
     }
   }
 }
