@@ -8,10 +8,11 @@ const template = {
       results: [
         {
           id: 1,
-          name: 'afasd',
+          name: 'afasdsd323',
           description: 'afasd',
           team: 'afasd',
-          jira_key: 'afasd'
+          jira_key: 'afasd',
+          template_type: 'flume'
         }
       ]
     },

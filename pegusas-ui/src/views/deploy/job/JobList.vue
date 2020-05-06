@@ -1,21 +1,19 @@
 <template>
   <el-row class="panel">
     <el-col :span="24">
-      <div class="List-title List-titleText" style="margin: 10px">
-        <el-dropdown>
-                  <span class="el-dropdown-link">
-                   任务查看<i class="el-icon-arrow-down el-icon--right"></i>
-                  </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="changeConfig('Apps')">应用列表</el-dropdown-item>
-            <el-dropdown-item @click.native="changeConfig('Hosts')">主机运维</el-dropdown-item>
-            <el-dropdown-item @click.native="changeConfig('Jobs')">任务查看</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+      <div class="List-title" style="margin: 10px">
+        <div class="List-titleText">任务查看</div>
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="jobs" iterator="job"></Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
+                  @clear="onSearchChange({search: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
     </el-col>
     <el-col :span="24" class="list">
       <el-table :data="jobs.results">
@@ -53,21 +51,15 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../../http-common'
 import moment from 'moment'
-import Search from '../../../components/search/index.vue'
 
 export default {
   name: 'appList',
-  components: {
-    Search
-  },
+  components: {},
   computed: {
     ...mapState({
-      jobs: state => state.job.jobs,
-      queryset: state => state.queryset.querysets.job
-    }),
-    baseUrl: () => '/api/v1/jobs/'
+      jobs: state => state.job.jobs
+    })
   },
   data () {
     return {
@@ -75,7 +67,11 @@ export default {
         page: 1,
         page_size: 10
       },
-      type: 'Jobs'
+      type: 'Jobs',
+      filter: {
+        name: ''
+      },
+      baseUrl: '/api/v1/jobs/'
     }
   },
   mounted: function () {
@@ -87,8 +83,8 @@ export default {
       'fetchJobs'
     ]),
     queryJobs () {
-      console.log('###QUERY_JOBS###', this.baseUrl, this.queryset, this.pagination)
-      this.fetchJobs({ url: this.baseUrl + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_JOBS###', this.baseUrl, this.pagination)
+      this.fetchJobs({ url: this.baseUrl, params: this.pagination })
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
@@ -102,13 +98,6 @@ export default {
       if (type !== this.type) {
         this.$router.push({ name: type })
       }
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      this.queryJobs()
     }
   }
 }

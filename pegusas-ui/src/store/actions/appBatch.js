@@ -2,14 +2,14 @@ import * as types from '../constants/types'
 import axios from '../../http-common'
 
 export const appBatch_actions = {
-  fetchAppBatchs ({commit, state}, { url, params }) {
+  fetchAppBatches ({commit, state}, { url, params }) {
     console.log('###FETCHING_APPBATCH###', url, params)
     url = url || '/api/v1/appBatch/'
     axios.get(url, {params: params}).then((res) => {
       console.log('####FETCH_APPBATCH_RES####', res)
       let data = res.data
       console.log('####FETCH_APPBATCH_DATA####', data)
-      commit(types.UPDATE_APPBATCHS_STATE, {
+      commit(types.UPDATE_APPBATCHES_STATE, {
         data
       })
     }).catch((error) => {
@@ -31,20 +31,6 @@ export const appBatch_actions = {
       let data = res.data
       console.log('####FETCH_APPBATCH_DETAIL_DATA####', data)
       commit(types.UPDATE_APPBATCH_STATE, {
-        data
-      })
-    }).catch((error) => {
-      console.log(error)
-    })
-  },
-  fetchTemplates ({commit, state}, { url, params }) {
-    console.log('###FETCHING_TEMPLATES###', url, params)
-    url = url || '/api/v1/templates/'
-    axios.get(url, {params: params}).then((res) => {
-      console.log('####FETCH_TEMPLATES_RES####', res)
-      let data = res.data
-      console.log('####FETCH_TEMPLATES_DATA####', data)
-      commit(types.UPDATE_BATCHTEMPLATES_STATE, {
         data
       })
     }).catch((error) => {
@@ -75,7 +61,7 @@ export const appBatch_actions = {
   },
   updateAppBatch ({commit, state}, params) {
     console.log('###UPDATING_APPBATCH###', params)
-    axios.put('/api/v1/APPBATCHs/' + params.id + '/', params).then((res) => {
+    axios.put('/api/v1/APPBATCHES/' + params.id + '/', params).then((res) => {
       console.log('####UPDATE_APPBATCH_RES####', res)
       let data = res.data
       console.log('####UPDATE_APPBATCH_DATA####', data)
@@ -88,7 +74,7 @@ export const appBatch_actions = {
   },
   createAppBatch ({commit, state}, params) {
     console.log('###CREATING_APPBATCH###', params)
-    axios.post('/api/v1/APPBATCHs/', params).then((res) => {
+    axios.post('/api/v1/APPBATCHES/', params).then((res) => {
       console.log('####CREATE_APPBATCH_RES####', res)
       let data = res.data
       console.log('####CREATE_APPBATCH_DATA####', data)

@@ -6,7 +6,8 @@ const log = {
     logs: {
       count: 0,
       results: []
-    }
+    },
+    logDetail: {}
   },
   actions: log_actions,
   mutations: log_mutations

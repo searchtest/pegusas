@@ -6,7 +6,10 @@ const app = {
     apps: {
       count: 0,
       results: [
-        {name: 'adfs'}
+        {
+          id: 1,
+          name: 'adfs'
+        }
       ]
     }
   },

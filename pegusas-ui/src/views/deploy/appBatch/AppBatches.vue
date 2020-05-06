@@ -6,14 +6,22 @@
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="appBatchs" iterator="appBatch">
-        <div style="display: flex;justify-content: flex-end">
-          <el-button type="primary" @click="createAppBatch()">创建批次</el-button>
-        </div>
-      </Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
+                  @clear="onSearchChange({search: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
+      <div style="display: flex;justify-content: flex-end">
+        <router-link :to="{ name: 'createAppBatch', params: {appId: this.appId} }">
+          <el-button type="primary">新建</el-button>
+        </router-link>
+      </div>
     </el-col>
     <el-col :span="24" class="list">
-      <el-table :data="appBatchs.results">
+      <el-table :data="appBatches.results">
         <el-table-column prop="name" label="应用批次名称" min-width="100" show-overflow-tooltip></el-table-column>
         <el-table-column prop="updateTime" label="批次更新时间" min-width="100"></el-table-column>
         <el-table-column prop="time" label="执行时间" min-width="100"></el-table-column>
@@ -43,12 +51,12 @@
               </button>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch('update', scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch(scope.row)">
                 <i class="fa fa-pencil"></i>
               </button>
             </el-tooltip>
             <el-tooltip content="查看" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch('view', scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'start'" @click="editBatch(scope.row, 'view')">
                 <i class="fa fa-search-plus"></i>
               </button>
             </el-tooltip>
@@ -57,7 +65,7 @@
               <i class="fa fa-spinner fa-spin" style="font-size: 20px;color:#67c23a;"></i>
             </el-tooltip>
             <el-tooltip content="取消" placement="top">
-              <button class="List-actionButton" v-if="scope.row.status === 'running'" @click="editBatch('view', scope.row)">
+              <button class="List-actionButton" v-if="scope.row.status === 'running'" @click="releaseBacth('stop', scope.row)">
                 <i class="fa fa-minus-circle"></i>
               </button>
             </el-tooltip>
@@ -74,7 +82,7 @@
         :page-sizes="[10, 20, 50, 100]"
         :page-size="pagination.page_size"
         layout="sizes, prev, pager, next"
-        :total="appBatchs.count">
+        :total="appBatches.count">
       </el-pagination>
     </el-col>
 
@@ -102,22 +110,17 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../../http-common'
 import moment from 'moment'
-import Search from '../../../components/search/index.vue'
+import Vue from 'vue'
 
 export default {
-  name: 'appBatchs',
-  props: ['name', 'team'],
-  components: {
-    Search
-  },
+  name: 'appBatches',
+  props: ['appId'],
+  components: {},
   computed: {
     ...mapState({
-      appBatchs: state => state.appBatch.appBatchs,
-      queryset: state => state.queryset.querysets.appBatch
-    }),
-    baseUrl: () => '/api/v1/appBatch/'
+      appBatches: state => state.appBatch.appBatches
+    })
   },
   data () {
     return {
@@ -125,11 +128,15 @@ export default {
         page: 1,
         page_size: 10
       },
-      dialogVisible: false
+      filter: {
+        name: ''
+      },
+      dialogVisible: false,
+      baseUrl: '/api/v1/appBatch/'
     }
   },
   mounted: function () {
-    this.queryAppBatchs()
+    this.queryAppBatches()
     // this.interval = setInterval(() => {
     //   this.fetchAwxJobDetail()
     // }, 5000)
@@ -137,40 +144,47 @@ export default {
   methods: {
     moment: moment,
     ...mapActions([
-      'fetchAppBatchs',
+      'fetchAppBatches',
       'fetchAwxJobDetail'
     ]),
-    queryAppBatchs () {
-      console.log('###QUERY_APPBATCHS###', this.baseUrl, this.queryset, this.pagination)
-      this.fetchAppBatchs({ url: this.baseUrl + (this.queryset || ''), params: this.pagination })
+    queryAppBatches () {
+      console.log('###QUERY_APPBATCHES###', this.baseUrl, this.pagination)
+      this.fetchAppBatches({ url: this.baseUrl, params: this.pagination })
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
-      this.queryAppBatchs()
+      this.queryAppBatches()
     },
     handleCurrentChange (val) {
       this.pagination = { ...this.pagination, page: val }
-      this.queryAppBatchs()
+      this.queryAppBatches()
     },
-    createAppBatch () {
-      this.$router.push({ name: 'createAppBatch', params: { batchId: -1, team: this.team, type: 'create' } })
-    },
-    editBatch (type, row) {
-      this.$router.push({ name: 'createAppBatch', params: { batchId: row.id, team: this.team, type: type } })
+    onSearchChange (param) {
+      for (let m in param) {
+        console.log('###ON_SEARCH_CHANGE###', m, param[m])
+        if (param[m] === '') {
+          Vue.delete(this.pagination, m)
+          console.log('###ON_SEARCH_CHANGE_DELETE_KEY###', m)
+        } else {
+          this.pagination = {...this.pagination, ...param}
+          this.pagination.page = 1
+          console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
+        }
+        this.pagination.page = 1
+        this.fetchTemplates({ url: this.baseUrl, params: this.pagination })
+      }
     },
     releaseBacth (type, row) {
       this.dialogVisible = true
     },
+    editBatch (row, type) {
+      this.$router.push({ name: 'AppBatchDetail',
+        params: { appId: this.appId, id: row.id },
+        query: { type: type } })
+    },
     execute () {
       this.dialogVisible = false
       window.open('http://localhost:8080')
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      this.queryAppBatchs()
     }
   }
 }

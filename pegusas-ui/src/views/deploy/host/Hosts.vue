@@ -1,21 +1,19 @@
 <template>
   <el-row class="panel">
     <el-col :span="24">
-      <div class="List-title List-titleText" style="margin: 10px">
-        <el-dropdown>
-                  <span class="el-dropdown-link">
-                   主机运维<i class="el-icon-arrow-down el-icon--right"></i>
-                  </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="changeConfig('Apps')">应用列表</el-dropdown-item>
-            <el-dropdown-item @click.native="changeConfig('Hosts')">主机运维</el-dropdown-item>
-            <el-dropdown-item @click.native="changeConfig('Jobs')">任务查看</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+      <div class="List-title" style="margin: 10px">
+        <div class="List-titleText">主机运维</div>
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="hosts" iterator="host"></Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.ip" @keyup.enter.native="onSearchChange({search: filter.ip})"
+                  @clear="onSearchChange({search: filter.ip})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.ip})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
     </el-col>
     <el-col :span="24" class="list">
       <el-table ref="hostTable" :data="hosts.results" tooltip-effect="dark"
@@ -66,21 +64,15 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../../http-common'
 import moment from 'moment'
-import Search from '../../../components/search/index.vue'
 
 export default {
   name: 'hosts',
-  components: {
-    Search
-  },
+  components: {},
   computed: {
     ...mapState({
-      hosts: state => state.host.hosts,
-      queryset: state => state.queryset.querysets.host
-    }),
-    baseUrl: () => '/api/v1/hosts/'
+      hosts: state => state.host.hosts
+    })
   },
   data () {
     return {
@@ -89,7 +81,11 @@ export default {
         page_size: 10
       },
       type: 'Hosts',
-      hostSelection: []
+      hostSelection: [],
+      filter: {
+        ip: ''
+      },
+      baseUrl: '/api/v1/hosts/'
     }
   },
   mounted: function () {
@@ -102,8 +98,8 @@ export default {
       'operateHost'
     ]),
     queryHosts () {
-      console.log('###QUERY_HOSTS###', this.baseUrl, this.queryset, this.pagination)
-      this.fetchHosts({ url: this.baseUrl + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_HOSTS###', this.baseUrl, this.pagination)
+      this.fetchHosts({ url: this.baseUrl, params: this.pagination })
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
@@ -138,13 +134,6 @@ export default {
       if (type !== this.type) {
         this.$router.push({ name: type })
       }
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      this.queryHosts()
     }
   }
 }

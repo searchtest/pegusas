@@ -1,20 +1,14 @@
 import * as types from '../constants/types'
 
 export const appBatch_mutations = {
-  [types.UPDATE_APPBATCHS_STATE] (state, action) {
-    console.log('####APPBATCHS_STATE_UPDATING####', JSON.parse(JSON.stringify(state)), action)
-    state.appBatchs = action.data
-    console.log('####APPBATCHS_STATE_UPDATED####', JSON.parse(JSON.stringify(state)))
+  [types.UPDATE_APPBATCHES_STATE] (state, action) {
+    console.log('####APPBATCHES_STATE_UPDATING####', JSON.parse(JSON.stringify(state)), action)
+    state.APPBATCHES = action.data
+    console.log('####APPBATCHES_STATE_UPDATED####', JSON.parse(JSON.stringify(state)))
   },
   [types.UPDATE_APPBATCH_STATE] (state, action) {
     console.log('####APPBATCH_STATE_UPDATING####', JSON.parse(JSON.stringify(state)), action)
     state.appBatchDetail = action.data
-    if (!('hosts' in state.appBatchDetail)) {
-      state.appBatchDetail.hosts = []
-    }
-    if (!('templates' in state.appBatchDetail)) {
-      state.appBatchDetail.templates = []
-    }
     console.log('####APPBATCH_STATE_UPDATED####', JSON.parse(JSON.stringify(state)))
   },
   [types.UPDATE_BATCHHOSTS_STATE] (state, action) {

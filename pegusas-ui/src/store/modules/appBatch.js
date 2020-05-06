@@ -3,7 +3,7 @@ import { appBatch_mutations } from '../mutations/appBatch'
 
 const appBatch = {
   state: {
-    appBatchs: {
+    appBatches: {
       count: 0,
       results: [
         {
@@ -70,27 +70,6 @@ const appBatch = {
           fuwu: 'sad',
           status: 'sad',
           banben: 'sad'
-        }
-      ]
-    },
-    templates: {
-      count: 0,
-      results: [
-        {
-          ip: 'sad1',
-          team: 'sad'
-        },
-        {
-          ip: 'sad2',
-          team: 'sad'
-        },
-        {
-          ip: 'sad3',
-          team: 'sad'
-        },
-        {
-          ip: 'sad4',
-          team: 'sad'
         }
       ]
     },

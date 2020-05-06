@@ -16,7 +16,6 @@ const store = new Vuex.Store({
     system: modules.system,
     appBatch: modules.appBatch,
     pagination: modules.pagination,
-    queryset: modules.queryset
   }
 })
 

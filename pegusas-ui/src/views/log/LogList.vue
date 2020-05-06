@@ -6,11 +6,19 @@
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="logs" iterator="log">
-        <div style="display: flex;justify-content: flex-end">
-          <el-button type="primary" @click="createLog()">创建日志</el-button>
-        </div>
-      </Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
+                  @clear="onSearchChange({search: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
+      <div style="display: flex;justify-content: flex-end">
+        <router-link :to="{ name: 'createLog'}">
+          <el-button type="primary">新建</el-button>
+        </router-link>
+      </div>
     </el-col>
     <el-col :span="24" class="list">
       <el-table :data="logs.results">
@@ -20,6 +28,20 @@
         <el-table-column prop="time" label="最后更新时间" min-width="100"></el-table-column>
         <el-table-column prop="description" label="审核人" min-width="100"></el-table-column>
         <el-table-column prop="description" label="审核状态" min-width="100"></el-table-column>
+        <el-table-column label="操作" min-width="200" align="center">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑" placement="top">
+              <button class="List-actionButton" @click="viewLog(scope.row)">
+                <i class="fa fa-pencil"></i>
+              </button>
+            </el-tooltip>
+            <el-tooltip content="查看" placement="top">
+              <button class="List-actionButton" @click="viewLog(scope.row, 'view')">
+                <i class="fa fa-search-plus"></i>
+              </button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
     </el-col>
     <!--工具条-->
@@ -38,19 +60,14 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../http-common'
 import moment from 'moment'
-import Search from '../../components/search/index.vue'
 
 export default {
   name: 'logs',
-  components: {
-    Search
-  },
+  components: {},
   computed: {
     ...mapState({
-      logs: state => state.log.logs,
-      queryset: state => state.queryset.querysets.log
+      logs: state => state.log.logs
     })
   },
   data () {
@@ -58,6 +75,9 @@ export default {
       pagination: {
         page: 1,
         page_size: 10
+      },
+      filter: {
+        name: ''
       }
     }
   },
@@ -70,8 +90,8 @@ export default {
       'fetchLogs'
     ]),
     queryLogs () {
-      console.log('###QUERY_LOGS###', this.queryset, this.pagination)
-      this.fetchLogs({ url: '/api/v1/logs' + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_LOGS###', this.pagination)
+      this.fetchLogs({ url: '/api/v1/logs', params: this.pagination })
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
@@ -80,13 +100,9 @@ export default {
     handleCurrentChange (val) {
       this.pagination = { ...this.pagination, page: val }
       this.queryLogs()
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      this.queryLogs()
+    },
+    viewLog (row, type) {
+      this.$router.push({ name: 'LogDetail', params: { id: row.id }, query: { type: type } })
     }
   }
 }

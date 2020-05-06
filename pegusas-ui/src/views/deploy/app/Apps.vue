@@ -14,7 +14,14 @@
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="apps" iterator="app"></Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
+                  @clear="onSearchChange({search: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
     </el-col>
     <el-col :span="24" class="list">
       <el-table :data="apps.results">
@@ -49,19 +56,15 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../../http-common'
 import moment from 'moment'
-import Search from '../../../components/search/index.vue'
+import Vue from 'vue'
 
 export default {
   name: 'apps',
-  components: {
-    Search
-  },
+  components: {},
   computed: {
     ...mapState({
-      apps: state => state.app.apps,
-      queryset: state => state.queryset.querysets.app
+      apps: state => state.app.apps
     })
   },
   data () {
@@ -69,6 +72,9 @@ export default {
       pagination: {
         page: 1,
         page_size: 10
+      },
+      filter: {
+        name: ''
       },
       standardMsg: '标椎化应用',
       standard: true
@@ -87,23 +93,50 @@ export default {
       'fetchApps'
     ]),
     queryStandardApps () {
-      console.log('###QUERY_APPS###', this.queryset, this.pagination)
-      this.fetchApps({ url: '/api/v1/apps/standard' + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_APPS###', this.pagination)
+      this.fetchApps({ url: '/api/v1/apps/standard', params: this.pagination })
     },
     queryUnStandardApps () {
-      console.log('###QUERY_APPS###', this.queryset, this.pagination)
-      this.fetchApps({ url: '/api/v1/apps/unstandard' + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_APPS###', this.pagination)
+      this.fetchApps({ url: '/api/v1/apps/unstandard', params: this.pagination })
+    },
+    onSearchChange (param) {
+      for (let m in param) {
+        console.log('###ON_SEARCH_CHANGE###', m, param[m])
+        if (param[m] === '') {
+          Vue.delete(this.pagination, m)
+          console.log('###ON_SEARCH_CHANGE_DELETE_KEY###', m)
+        } else {
+          this.pagination = {...this.pagination, ...param}
+          this.pagination.page = 1
+          console.log('###ON_SEARCH_CHANGE_ADD_KEY###', ...param)
+        }
+        this.pagination.page = 1
+        if (this.standard) {
+          this.fetchApps({ url: '/api/v1/apps/standard', params: this.pagination })
+        } else {
+          this.fetchApps({ url: '/api/v1/apps/unstandard', params: this.pagination })
+        }
+      }
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
-      this.queryApps()
+      if (this.standard) {
+        this.queryStandardApps()
+      } else {
+        this.queryUnStandardApps()
+      }
     },
     handleCurrentChange (val) {
       this.pagination = { ...this.pagination, page: val }
-      this.queryApps()
+      if (this.standard) {
+        this.queryStandardApps()
+      } else {
+        this.queryUnStandardApps()
+      }
     },
     setAppBacth (row) {
-      this.$router.push({ name: 'AppBatch', params: { name: row.name, team: row.team } })
+      this.$router.push({ name: 'AppBatches', params: { appId: row.id } })
     },
     changeConfig (type) {
       this.standard = type
@@ -112,17 +145,6 @@ export default {
         this.queryStandardApps()
       } else {
         this.standardMsg = '非标椎化应用'
-        this.queryUnStandardApps()
-      }
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      if (this.standard) {
-        this.queryStandardApps()
-      } else {
         this.queryUnStandardApps()
       }
     }

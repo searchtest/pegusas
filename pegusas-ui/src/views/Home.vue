@@ -90,11 +90,6 @@ export default {
               iconCls: 'fa  fa-folder-open'
             },
             {
-              name: '主机运维',
-              path: '/app/hosts',
-              iconCls: 'fa  fa-folder-open'
-            },
-            {
               name: '任务查看',
               path: '/app/jobs',
               iconCls: 'fa  fa-folder-open'
@@ -104,6 +99,11 @@ export default {
         {
           name: '系统设置',
           path: '/system',
+          iconCls: 'fa  fa-folder-open'
+        },
+        {
+          name: '日志登记',
+          path: '/logs',
           iconCls: 'fa  fa-folder-open'
         }
       ]

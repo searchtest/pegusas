@@ -6,11 +6,19 @@
       </div>
     </el-col>
     <el-col :span="24">
-      <Search name="systems" iterator="system">
-        <div style="display: flex;justify-content: flex-end">
-          <el-button type="primary" @click="createSystem()">新建</el-button>
-        </div>
-      </Search>
+      <el-col :span="12">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
+                  @clear="onSearchChange({search: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+            <i class="fa fa-search"></i>
+          </el-button>
+        </el-input>
+      </el-col>
+      <div style="display: flex;justify-content: flex-end">
+        <router-link :to="{ name: 'createSystem'}">
+          <el-button type="primary">新建</el-button>
+        </router-link>
+      </div>
     </el-col>
     <el-col :span="24" class="list">
       <el-table :data="systems.results">
@@ -50,28 +58,26 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import axios from '../../http-common'
 import moment from 'moment'
-import Search from '../../components/search/index.vue'
 
 export default {
   name: 'systems',
-  components: {
-    Search
-  },
+  components: {},
   computed: {
     ...mapState({
-      systems: state => state.system.systems,
-      queryset: state => state.queryset.querysets.system
-    }),
-    baseUrl: () => '/api/v1/system/'
+      systems: state => state.system.systems
+    })
   },
   data () {
     return {
       pagination: {
         page: 1,
         page_size: 10
-      }
+      },
+      filter: {
+        name: ''
+      },
+      baseUrl: '/api/v1/system/'
     }
   },
   mounted: function () {
@@ -83,8 +89,8 @@ export default {
       'fetchSystems'
     ]),
     querySystems () {
-      console.log('###QUERY_SYSTEMS###', this.baseUrl, this.queryset, this.pagination)
-      this.fetchSystems({ url: this.baseUrl + (this.queryset || ''), params: this.pagination })
+      console.log('###QUERY_SYSTEMS###', this.baseUrl, this.pagination)
+      this.fetchSystems({ url: this.baseUrl, params: this.pagination })
     },
     handleSizeChange (val) {
       this.pagination = { ...this.pagination, page: 1, page_size: val }
@@ -98,13 +104,6 @@ export default {
       if (type !== this.type) {
         this.$router.push({ name: type })
       }
-    }
-  },
-  watch: {
-    queryset (newObject, oldObject) {
-      console.log('###watch queryset###', newObject, oldObject)
-      this.pagination = { ...this.pagination, page: 1 }
-      this.querySystems()
     }
   }
 }

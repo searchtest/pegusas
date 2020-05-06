@@ -93,8 +93,7 @@ export default {
   computed: {
     ...mapState({
       templates: state => state.template.templates
-    }),
-    baseUrl: () => '/api/v1/templates/'
+    })
   },
   data () {
     return {
@@ -106,7 +105,8 @@ export default {
       configDes: null,
       filter: {
         name: ''
-      }
+      },
+      baseUrl: '/api/v1/templates/'
     }
   },
   mounted: function () {

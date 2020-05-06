@@ -14,12 +14,14 @@ import TemplateDetail from '../views/template/TemplateDetail.vue'
 import LogstashDetail from '../views/template/logstash/LogstashDetail.vue'
 import App from '../views/deploy/app/index.vue'
 import Apps from '../views/deploy/app/Apps.vue'
-import Hosts from '../views/deploy/host/Hosts.vue'
 import Jobs from '../views/deploy/job/JobList.vue'
-import AppBatchs from '../views/deploy/appBatch/AppBatchs.vue'
-import AppBatch from '../views/deploy/appBatch/AppBatchDetail.vue'
+import AppBatches from '../views/deploy/appBatch/AppBatches.vue'
+import AppBatchDetail from '../views/deploy/appBatch/AppBatchDetail.vue'
 import System from '../views/system/index.vue'
 import Systems from '../views/system/SystemList.vue'
+import Log from '../views/log/index.vue'
+import LogList from '../views/log/LogList.vue'
+import LogDetail from '../views/log/LogDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -201,26 +203,20 @@ let routes = [
             component: Apps
           },
           {
-            path: 'hosts',
-            name: 'Hosts',
-            props: true,
-            component: Hosts
-          },
-          {
             path: 'jobs',
             name: 'Jobs',
             props: true,
             component: Jobs
           },
           {
-            path: ':name/:team',
-            component: AppBatchs,
+            path: ':appId/batches',
+            component: AppBatches,
             props: true,
-            name: 'AppBatch'
+            name: 'AppBatches'
           },
           {
-            path: ':batchId/:team/:type/appBatch',
-            component: AppBatch,
+            path: ':appId/addBatch',
+            component: AppBatchDetail,
             props: true,
             meta: {
               breadcrumb: {
@@ -233,7 +229,26 @@ let routes = [
                 path: '',
                 name: 'createAppBatch',
                 props: true,
-                component: AppBatch
+                component: AppBatchDetail
+              }
+            ]
+          },
+          {
+            path: ':appId/:id/updateBatch',
+            component: AppBatchDetail,
+            props: true,
+            meta: {
+              breadcrumb: {
+                name: 'AppBatchDetail',
+                label: '批次详情'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'AppBatchDetail',
+                props: true,
+                component: AppBatchDetail
               }
             ]
           }
@@ -254,6 +269,60 @@ let routes = [
             name: 'Systems',
             props: true,
             component: Systems
+          }
+        ]
+      },
+      {
+        path: 'logs',
+        component: Log,
+        meta: {
+          breadcrumb: {
+            name: 'Logs',
+            label: '日志登记'
+          }
+        },
+        children: [
+          {
+            path: '',
+            name: 'Logs',
+            props: true,
+            component: LogList
+          },
+          {
+            path: 'add',
+            component: LogDetail,
+            meta: {
+              breadcrumb: {
+                name: 'createLog',
+                label: '创建日志'
+              }
+            },
+            children: [
+              {
+                path: '',
+                name: 'createLog',
+                component: LogDetail
+              }
+            ]
+          },
+          {
+            path: ':logId',
+            props: true,
+            component: LogDetail,
+            meta: {
+              breadcrumb: {
+                name: 'LogDetail',
+                label: '日志登记详情'
+              }
+            },
+            children: [
+              {
+                path: '',
+                props: true,
+                name: 'LogDetail',
+                component: LogDetail
+              }
+            ]
           }
         ]
       }
