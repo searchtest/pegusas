@@ -284,7 +284,7 @@ export default {
         ip: ''
       },
       hostsUrl: '/api/v1/hosts/',
-      templatesUrl: '/api/v1/templates/'
+      templatesUrl: '/api/v1/templatesdetails/'
     }
   },
   mounted () {

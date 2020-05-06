@@ -86,12 +86,12 @@ export default {
           children: [
             {
               name: '应用信息',
-              path: '/app/apps',
+              path: '/apps',
               iconCls: 'fa  fa-folder-open'
             },
             {
               name: '任务查看',
-              path: '/app/jobs',
+              path: '/apps/jobs',
               iconCls: 'fa  fa-folder-open'
             }
           ]

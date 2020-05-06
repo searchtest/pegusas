@@ -15,9 +15,9 @@
     </el-col>
     <el-col :span="24">
       <el-col :span="12">
-        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({search: filter.name})"
-                  @clear="onSearchChange({search: filter.name})" :clearable="true">
-          <el-button slot="append" @click="onSearchChange({search: filter.name})">
+        <el-input placeholder="请输入" v-model="filter.name" @keyup.enter.native="onSearchChange({name: filter.name})"
+                  @clear="onSearchChange({name: filter.name})" :clearable="true">
+          <el-button slot="append" @click="onSearchChange({name: filter.name})">
             <i class="fa fa-search"></i>
           </el-button>
         </el-input>
@@ -27,7 +27,11 @@
       <el-table :data="apps.results">
         <el-table-column prop="name" label="应用名称" min-width="100" show-overflow-tooltip></el-table-column>
         <el-table-column prop="summary_fields.team.name" label="所属团队" min-width="100"></el-table-column>
-        <el-table-column prop="created_at" label="上线时间" min-width="100"></el-table-column>
+        <el-table-column prop="created_at" label="上线时间" min-width="100">
+          <template slot-scope="scope">
+            {{ moment(scope.row.created_at).format('YYYY-MM-DD HH:mm:ss') }}
+          </template>
+        </el-table-column>
         <el-table-column prop="description" label="描述" min-width="100"></el-table-column>
         <el-table-column label="设置批次" min-width="100" align="right">
           <template slot-scope="scope">
@@ -136,7 +140,7 @@ export default {
       }
     },
     setAppBacth (row) {
-      this.$router.push({ name: 'AppBatches', params: { appId: row.id } })
+      this.$router.push({ name: 'AppBatches', params: { appId: row.id, standard: this.standard } })
     },
     changeConfig (type) {
       this.standard = type

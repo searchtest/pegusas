@@ -187,17 +187,17 @@ let routes = [
         ]
       },
       {
-        path: 'app',
+        path: 'apps',
         component: App,
         meta: {
           breadcrumb: {
-            name: 'App',
-            label: '部署管理'
+            name: 'Apps',
+            label: '应用信息'
           }
         },
         children: [
           {
-            path: 'apps',
+            path: '',
             name: 'Apps',
             props: true,
             component: Apps
@@ -209,7 +209,7 @@ let routes = [
             component: Jobs
           },
           {
-            path: ':appId/batches',
+            path: ':appId/:standard/batches',
             component: AppBatches,
             props: true,
             name: 'AppBatches'
